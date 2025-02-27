@@ -1,1 +1,0 @@
-# traveling_app_backend
