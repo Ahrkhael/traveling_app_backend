@@ -61,6 +61,9 @@ jobs:
       - name: Assign execute permissions to scripts
         run: chmod -R +x bin/
 
+      - name: Fix shebang lines for all scripts in bin/
+        run: find bin/ -type f -exec sed -i '1s/ruby\.exe/ruby/' {} \;
+
       - name: Lint code for consistent style
         run: bin/rubocop -f github
 
