@@ -8,7 +8,6 @@ on:
 jobs:
   scan_ruby:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,6 +20,9 @@ jobs:
 
       - name: Assign execute permissions to scripts
         run: chmod -R +x bin/
+
+      - name: Fix shebang lines for all scripts in bin/
+        run: find bin/ -type f -exec sed -i '1s/ruby\.exe/ruby/' {} \;
 
       - name: Scan for common Rails security vulnerabilities using static analysis
         run: bin/brakeman --no-pager
@@ -64,7 +66,6 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-
     services:
       postgres:
         image: postgres
@@ -74,12 +75,6 @@ jobs:
         ports:
           - 5432:5432
         options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
-
-      # redis:
-      #   image: redis
-      #   ports:
-      #     - 6379:6379
-      #   options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
       - name: Install packages
@@ -97,11 +92,19 @@ jobs:
       - name: Assign execute permissions to scripts
         run: chmod -R +x bin/
 
+      - name: Fix shebang lines for all scripts in bin/
+        run: find bin/ -type f -exec sed -i '1s/ruby\.exe/ruby/' {} \;
+
+      - name: Create and migrate test database
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432
+        run: bin/rails db:create db:migrate
+
       - name: Run tests
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
-          # REDIS_URL: redis://localhost:6379/0
         run: bin/rails db:test:prepare test test:system
 
       - name: Keep screenshots from failed system tests
