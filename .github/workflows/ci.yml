@@ -64,6 +64,9 @@ jobs:
       - name: Fix shebang lines for all scripts in bin/
         run: find bin/ -type f -exec sed -i '1s/ruby\.exe/ruby/' {} \;
 
+      - name: Auto-correct RuboCop offenses
+        run: bin/rubocop --auto-correct
+
       - name: Lint code for consistent style
         run: bin/rubocop -f github
 
