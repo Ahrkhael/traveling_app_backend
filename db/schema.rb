@@ -16,7 +16,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_11_145230) do
 
   create_table "cities", force: :cascade do |t|
     t.string "name", null: false
-    t.string "image"
+    t.string "image_url"
     t.string "blur_data_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -25,6 +25,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_11_145230) do
   create_table "monuments", force: :cascade do |t|
     t.string "name", null: false
     t.bigint "city_id", null: false
+    t.string "image_url"
+    t.string "blur_data_url"
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
+    t.string "monument_link"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["city_id"], name: "index_monuments_on_city_id"
