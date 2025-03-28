@@ -1,14 +1,17 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      # Return monuments for a city
-      get 'cities/:name/monuments', to: 'cities#monuments_by_city'
-
-      # Return monuments details for a city
-      get 'cities/:name/monuments_details', to: 'cities#monuments_details_by_city'
-
-      # Return cities
-      resources :cities, only: [:index, :show]
+      resources :cities, only: [:index, :show] do
+        get :monuments, on: :member
+        collection do
+          get 'by_name/:name', to: 'cities#show_by_name'
+        end
+      end
+      resources :monuments, only: [:index, :show] do
+        collection do
+          get 'by_name/:name', to: 'monuments#show_by_name'
+        end
+      end
     end
   end
 end
