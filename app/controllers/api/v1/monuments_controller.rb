@@ -8,6 +8,11 @@ module Api
         render json: monuments, each_serializer: MonumentDetailSerializer
       end
 
+      def names
+        monuments_names = Monument.pluck(:name)
+        render json: monuments_names
+      end
+
       def show_by_name
         if @monument
           render json: @monument, serializer: MonumentDetailSerializer

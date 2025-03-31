@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       end
       resources :monuments, only: [:index, :show] do
         collection do
+          get 'names', to: 'monuments#names'
           get 'by_name/:name', to: 'monuments#show_by_name'
         end
       end
