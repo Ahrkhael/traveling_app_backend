@@ -21,6 +21,11 @@ module Api
         render json: @city.monuments, each_serializer: MonumentBasicSerializer
       end
 
+      def names
+        city_names = City.pluck(:name)
+        render json: city_names
+      end
+
       private
 
       def set_city
