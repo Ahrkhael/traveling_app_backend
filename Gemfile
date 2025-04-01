@@ -55,6 +55,9 @@ group :development, :test do
 
   # Dotenv variables
   gem "dotenv-rails"
+
+  # Cors gem
+  gem "rack-cors"
 end
 
 group :development do
